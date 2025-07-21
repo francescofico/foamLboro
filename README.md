@@ -24,3 +24,9 @@ openFoam compiled function and application - debug not implemented
 ### About this repository
 - branch -> version
 -
+
+### When using the code
+Please cite:
+- Francesco Fico, Ivan Langella, Hao Xia; Large-eddy simulation of magnetohydrodynamics and heat transfer in annular pipe liquid metal flow. Physics of Fluids 1 May 2023; 35 (5): 055106. https://doi.org/10.1063/5.0143687
+- Francesco Fico, Hao Xia, Ivan Langella, Gerasimos Politis, Numerical study of liquid metal magnetoconvection and heat transfer in an electrically conductive square duct,
+International Journal of Heat and Mass Transfer, Volume 231,2024, 125857, https://doi.org/10.1016/j.ijheatmasstransfer.2024.125857.
