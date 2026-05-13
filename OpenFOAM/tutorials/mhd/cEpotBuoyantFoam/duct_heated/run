@@ -1,0 +1,6 @@
+#!/bin/bash
+
+blockMesh -region fluid
+blockMesh -region solid
+decomposePar -allRegions
+mpirun -np 8 cEpotBuoyantFoam -parallel >> log 2>&1 | tee -a log

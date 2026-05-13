@@ -1,0 +1,27 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      transportProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// lead lithium calculated at T = 270 C
+
+transportModel  Newtonian;
+
+// dynamic viscosity mu = rho*nu = 2.462E-03 kg/(m s)
+
+nu              nu [0 2 -1 0 0 0 0] 2.4935E-07;
+
+rho             rho [1 -3 0 0 0 0 0] 9873; // density of the fluid
+
+// ************************************************************************* //

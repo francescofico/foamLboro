@@ -1,0 +1,3 @@
+epotFoam_isoTh.C
+
+EXE = $(FOAM_USER_APPBIN)/epotFoam_isoTh

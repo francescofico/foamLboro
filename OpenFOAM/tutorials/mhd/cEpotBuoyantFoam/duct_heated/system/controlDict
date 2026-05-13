@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+application     cEpotFoam; 
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         800;
+
+deltaT          2.0e-3;
+
+// writeControl    clockTime;
+
+// writeInterval   10000;
+
+writeControl    timeStep;
+
+writeInterval   100;
+
+
+purgeWrite      2;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  off;
+
+// Maximum diffusion number
+maxDi           10.0;
+
+maxCo           0.05;
+
+timeStart       200;
+
+timeStart2       220;
+
+functions
+{
+
+//#include "FOfieldAverage"
+//#include "FOwallShear"
+//#include "surfacePost"
+}
+
+OptimisationSwitches
+{
+    fileHandler collated; // collated: thread buffer size for queued file writes.
+    //  If set to 0 or not sufficient for the file size, threading is not used.
+    //  Default: 1e9
+    maxThreadFileBufferSize 1e11; // v1712 default is 0;
+}
+
+
+// ************************************************************************* //

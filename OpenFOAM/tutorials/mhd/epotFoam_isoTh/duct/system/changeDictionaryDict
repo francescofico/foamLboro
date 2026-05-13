@@ -1,0 +1,247 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+U
+{
+    internalField   uniform (0.02107 0 0);
+
+    boundaryField
+    {
+
+      ".*"
+        {
+            type            noSlip;
+             value           uniform (0 0 0);
+        }
+    
+        inlet
+        {
+            type            cyclicAMI;
+            value           $internalField;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+            value           $internalField;
+        }
+    }
+}
+
+T
+{
+    internalField   uniform 530;
+
+    boundaryField
+    {
+          ".*"
+        {
+            type            zeroGradient;
+            value           uniform 530;
+        }
+
+        inlet
+        {
+            type            cyclicAMI;
+           
+        }
+         outlet
+        {
+            type            cyclicAMI;
+           
+        }
+       
+        
+        interface
+        {
+           type            solidWallMixedTemperatureCoupled;
+            Tnbr            T;
+            K               K;
+            value           uniform 530;
+        }
+    }
+}
+
+K
+{
+    internalField   uniform 11.9;
+
+    boundaryField
+    {
+        ".*"
+        {
+           type            fixedValue;
+		        value           uniform 11.9;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }
+
+    }
+}
+
+PotE
+{
+    internalField   uniform 0.0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+        }
+
+       
+        interface
+        {
+           type            solidWallMixedPotentialCoupled;
+            PotEnbr            PotE;
+            sigma               sigma;
+            value           uniform 0.0;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }
+    }
+}
+
+B0
+{
+    internalField   uniform (0 0.3 0.0);
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }
+       
+    }
+}
+
+p
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }    }
+}
+nut
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           uniform 0;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }
+    }
+}
+
+sigma
+{
+    internalField   uniform 7.7E05;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            fixedValue;
+            value           uniform 7.7E05;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }
+
+    }
+}
+
+
+alphat
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+        }
+          inlet
+        {
+            type            cyclicAMI;
+            
+        }
+        outlet
+        {
+            type            cyclicAMI;
+        }
+    }
+}
+
+
+// ************************************************************************* //

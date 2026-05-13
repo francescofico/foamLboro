@@ -1,0 +1,4 @@
+#!/bin/bash
+
+blockMesh
+epotFoam_isoTh >> log 2>&1 | tee -a log
