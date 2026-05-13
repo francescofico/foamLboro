@@ -15,7 +15,7 @@ This repository contains custom solvers, libraries, and post-processing tools de
     *   Support for Buoyancy-driven flows (Magnetoconvection).
 *   **Conjugate approach**: conjugate solver for arbiitrary electrical conductivity.
 
-<<<<<<< HEAD
+
 Check this dissertation for more info: [High-fidelity numerical investigation for liquid metal magnetoconvection](https://repository.lboro.ac.uk/articles/thesis/High-fidelity_numerical_investigation_of_liquid_metal_magnetoconvection/27837024?file=50598696).
 
 ### Libraries & Routines
@@ -30,7 +30,6 @@ Located in the `/post` directory, these tools are for handling of large openfoam
 *   **mmap Field Reader**: A high-efficiency reader using memory mapping to handle OpenFOAM fields without loading entire datasets into RAM—ideal for large LES datasets.
 *   **Automated Reconstruction**: Bash wrappers for `reconstructPar` and field mapping across different mesh topologies.
 
-=======
 ### Libraries & Routines
 *   **Boundary Conditions**: Custom `patch` implementations for electrically conductive walls.
 *   **Statistics**: Classes for calculating statistics on the fly.
@@ -43,7 +42,6 @@ Located in the `/post` directory, these tools are for handling of large openfoam
 *   **mmap Field Reader**: A high-efficiency reader using memory mapping to handle OpenFOAM fields without loading entire datasets into RAM—ideal for large LES datasets.
 *   **Automated Reconstruction**: Bash wrappers for `reconstructPar` and field mapping across different mesh topologies.
 
->>>>>>> 472d969115cf2dee937bdb66461ed37f1936606e
 ## 📖 External Resources
 *   **OpenFOAM.com**: [Source Code](https://dl.openfoam.com/source/) | [Installation](http://www.openfoam.com/download/)
 *   **Documentation**: [User Guide](http://www.openfoam.com/documentation)
