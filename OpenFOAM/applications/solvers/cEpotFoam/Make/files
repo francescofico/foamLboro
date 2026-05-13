@@ -1,0 +1,6 @@
+derivedFvPatchFields/solidWallMixedPotentialCoupled/solidWallMixedPotentialCoupledFvPatchScalarField.C
+
+fluid/icoCourantNo.C
+
+cEpotFoam.C
+EXE = $(FOAM_USER_APPBIN)/cEpotFoam

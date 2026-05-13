@@ -1,0 +1,10 @@
+derivedFvPatchFields/solidWallHeatFluxTemperature/solidWallHeatFluxTemperatureFvPatchScalarField.C
+derivedFvPatchFields/solidWallMixedTemperatureCoupled/solidWallMixedTemperatureCoupledFvPatchScalarField.C
+
+derivedFvPatchFields/solidWallMixedPotentialCoupled/solidWallMixedPotentialCoupledFvPatchScalarField.C
+
+fluid/icoCourantNo.C
+solid/solidRegionDiffNo.C
+
+cEpotBuoyantBulkFoam.C
+EXE = $(FOAM_USER_APPBIN)/cEpotBuoyantBulkFoam

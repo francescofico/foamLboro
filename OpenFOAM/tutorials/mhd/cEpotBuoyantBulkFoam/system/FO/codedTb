@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  www.openfoam.com
+    \\  /    A nd           | Version:  v1912
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+
+ updateTb
+    {
+        type coded;
+        libs ("libutilityFunctionObjects.so");
+        writeControl   writeTime;
+	    region		fluid;
+        executeControl timeStep;
+        executeInterval 1;
+
+        name updateTb;
+
+        codeExecute
+        #{
+            const fvMesh& mesh = refCast<const fvMesh>(obr_);
+
+            volScalarField& Tb =
+                const_cast<volScalarField&>
+                (
+                    mesh.lookupObject<volScalarField>("Tb")
+                );
+
+            const volScalarField& T =
+                mesh.lookupObject<volScalarField>("T");
+
+            const vectorField& C = mesh.C();
+
+            forAll(Tb, celli)
+            {
+                const scalar x = C[celli].x();
+
+                // Example: prescribed spatial reference temperature
+                Tb[celli] = 273.15 + 0.05*x;
+
+                // Or, for example, based on T:
+                // Tb[celli] = T[celli];
+            }
+
+            Tb.correctBoundaryConditions();
+        #};
+    }
+  

@@ -1,0 +1,140 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  www.openfoam.com
+    \\  /    A nd           | Version:  v1912
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+
+ localTb
+    {
+        type coded;
+        libs ("libutilityFunctionObjects.so");
+
+        name localTb;
+        region fluid;
+        executeControl  timeStep;
+        executeInterval 10;
+
+        writeControl    writeTime;
+
+        codeInclude
+        #{
+            #include "fvCFD.H"
+        #};
+
+        codeExecute
+        #{
+            const fvMesh& mesh = refCast<const fvMesh>(obr_);
+
+            Info<< "Updating cross-sectional bulk temperature field Tb" << endl;
+
+            // Lookup existing fields
+            const volScalarField& T =
+                mesh.lookupObject<volScalarField>("T");
+
+            const volVectorField& U =
+                mesh.lookupObject<volVectorField>("U");
+
+            volScalarField& Tb =
+                const_cast<volScalarField&>
+                (
+                    mesh.lookupObject<volScalarField>("Tb")
+                );
+
+            const vectorField& C = mesh.C();
+            const scalarField& V = mesh.V();
+
+            // Number of streamwise bins used to approximate cross-sections
+            const label nBins = 25;
+
+            // determine streamwise limits from the mesh, only works if x is the largest dimension
+            scalar xMin = GREAT;
+            scalar xMax = -GREAT;
+
+            forAll(C, celli)
+            {
+                xMin = min(xMin, C[celli].x());
+                xMax = max(xMax, C[celli].x());
+            }
+
+            reduce(xMin, minOp<scalar>());
+            reduce(xMax, maxOp<scalar>());
+
+            const scalar Lx = xMax - xMin;
+
+            // if (Lx < SMALL)
+            // {
+            //     FatalErrorInFunction
+            //         << "Invalid streamwise length while computing Tb."
+            //         << abort(FatalError);
+            // }
+
+            scalarField sumUT(nBins, 0.0);
+            scalarField sumU(nBins, 0.0);
+
+            // Accumulate weighted temperature in each x-bin
+            forAll(C, celli)
+            {
+                label bin =
+                    label
+                    (
+                        scalar(nBins)*(C[celli].x() - xMin)/Lx
+                    );
+
+                bin = max(label(0), min(nBins - 1, bin));
+
+                const scalar Ux = U[celli].x();
+
+                sumUT[bin] += Ux*T[celli]*V[celli];
+                sumU[bin]  += Ux*V[celli];
+            }
+
+            // Parallel reduction
+            reduce(sumUT, sumOp<scalarField>());
+            reduce(sumU,  sumOp<scalarField>());
+
+            scalarField TbBin(nBins, 0.0);
+
+            forAll(TbBin, bin)
+            {
+                if (mag(sumU[bin]) > SMALL)
+                {
+                    TbBin[bin] = sumUT[bin]/sumU[bin];
+                }
+                else
+                {
+                    // Fallback value if no flow passes through the bin
+                    TbBin[bin] = gAverage(T.internalField());
+                }
+            }
+
+            // Map the 1D bulk-temperature profile back to the full 3D field
+            forAll(C, celli)
+            {
+                label bin =
+                    label
+                    (
+                        scalar(nBins)*(C[celli].x() - xMin)/Lx
+                    );
+
+                bin = max(label(0), min(nBins - 1, bin));
+
+                Tb[celli] = TbBin[bin];
+            }
+
+            Tb.correctBoundaryConditions();
+        #};
+
+        codeWrite
+        #{
+            const fvMesh& mesh = refCast<const fvMesh>(obr_);
+
+            const volScalarField& Tb =
+                mesh.lookupObject<volScalarField>("Tb");
+
+            //Info<< "Writing Tb field" << endl;
+            Tb.write();
+        #};
+    }

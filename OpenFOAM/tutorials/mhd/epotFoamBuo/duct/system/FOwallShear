@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  www.openfoam.com
+    \\  /    A nd           | Version:  v1912
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+
+wallShearStress1
+{
+    // Mandatory entries (unmodifiable)
+    type            wallShearStress;
+    libs            (fieldFunctionObjects);
+    timeStart	    $timeStart;
+    // Optional entries (runtime modifiable)
+    writeControl    writeTime;
+}
+
+fieldAverage4
+    {
+        type            fieldAverage;
+        libs            ("libfieldFunctionObjects.so");
+        enabled         true;
+        timeStart       $timeStart;
+        writeControl   writeTime;
+
+        fields
+        (
+
+            wallShearStress
+            {
+                mean        on;
+                prime2Mean  off;
+                base        time;
+            }
+
+        );
+    }
+
+
+
+

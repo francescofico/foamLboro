@@ -1,0 +1,59 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  www.openfoam.com
+    \\  /    A nd           | Version:  v1912
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+
+fieldAverage1
+    {
+        type            fieldAverage;
+        libs            ("libfieldFunctionObjects.so");
+        enabled         true;
+	    timeStart	$timeStart;
+        writeControl   writeTime;
+	    region		fluid;
+        fields
+        (
+            U
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+   	   
+
+        );
+    }
+
+ fieldAverage2
+    {
+        type            fieldAverage;
+        libs            ("libfieldFunctionObjects.so");
+        enabled         true;
+	    timeStart	$timeStart;
+        writeControl   writeTime;
+	    region		fluid;
+        fields
+        (
+            lorentz
+            {
+                mean        on;
+                prime2Mean  off;
+                base        time;
+            }
+	    J
+            {
+                mean        on;
+                prime2Mean  off;
+                base        time;
+            }
+
+   	   
+
+        );
+    }
+
+  

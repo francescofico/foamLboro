@@ -1,0 +1,5 @@
+#!/bin/bash
+
+blockMesh -region solid
+blockMesh -region fluid
+cEpotFoam >> log 2>&1 | tee -a log

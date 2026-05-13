@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    arch        "LSB;label=32;scalar=64";
+    location    "0/fluid";
+    object      PotE;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 2 -3 0 0 -1 0];
+
+
+internalField   uniform 0;
+
+boundaryField
+{
+   bottom
+    {
+         type            zeroGradient;
+    }
+    
+
+    top
+    {
+         type            zeroGradient;
+    }
+    
+
+    front
+    {
+        type            solidWallMixedPotentialCoupled;
+        value           uniform 0;
+        PotEnbr         PotE;
+        sigma           sigma;
+    }
+    
+
+    back
+    {
+                type            solidWallMixedPotentialCoupled;
+        value           uniform 0;
+        PotEnbr         PotE;
+        sigma           sigma;
+    }
+    
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
+    inlet
+    {
+        type            zeroGradient;
+    }
+
+}
+
+
+// ************************************************************************* //
