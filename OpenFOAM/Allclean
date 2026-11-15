@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")"
+
+if [ "$#" -ne 0 ]; then
+    echo "Usage: $0 (no arguments)" >&2
+    exit 1
+fi
+
+if [ -z "${WM_PROJECT_DIR:-}" ] || [ -z "${WM_OPTIONS:-}" ] || \
+   [ -z "${FOAM_USER_APPBIN:-}" ] || [ -z "${FOAM_USER_LIBBIN:-}" ] || \
+   ! command -v wclean >/dev/null 2>&1; then
+    echo "Source the OpenFOAM.com etc/bashrc before running Allclean." >&2
+    exit 1
+fi
+
+for solver in epotFoam_isoTh epotFoamBuo cEpotFoam cEpotBuoyantFoam cEpotBuoyantBulkFoam; do
+    wclean "applications/solvers/$solver"
+    rm -f -- "$FOAM_USER_APPBIN/$solver"
+done
+
+wclean libso src/mhdBoundaryConditions
+rm -f -- "$FOAM_USER_LIBBIN/libmhdBoundaryConditions.so"

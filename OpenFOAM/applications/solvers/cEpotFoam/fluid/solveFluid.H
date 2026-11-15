@@ -1,33 +1,20 @@
-if (finalIter)
+#include "setFinalRegionIteration.H"
+
+if (!frozenFlow)
 {
-    mesh.data::add("finalIteration", true);
+    #include "UEqn.H"
 }
 
-if (frozenFlow)
 {
     #include "PotEEqn.H"
 }
-else
+
+if (!frozenFlow && !coupledScalars)
 {
-
-
-//Coefficients matrix for velocity
-// Solve the Momentum equation
-#include "UEqn.H"
-#include "PotEEqn.H"
-//PISO Loop
-for (int corr=0; corr<nCorr; corr++)
-{
-	#include "pEqn.H"
-
-}
-    turbulence.correct();
-
+    tmp<fvVectorMatrix>& tUEqn = fluidMomentumMatrices[i];
+    fvVectorMatrix& UEqn = tUEqn.ref();
+    #include "correctFluidPressure.H"
+    tUEqn.clear();
 }
 
-
-if (finalIter)
-{
-    mesh.data::remove("finalIteration");
-}
-
+#include "clearFinalRegionIteration.H"

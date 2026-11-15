@@ -1,5 +1,3 @@
-derivedFvPatchFields/solidWallMixedPotentialCoupled/solidWallMixedPotentialCoupledFvPatchScalarField.C
-
 fluid/icoCourantNo.C
 
 cEpotFoam.C

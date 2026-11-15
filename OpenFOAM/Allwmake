@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")"
+
+if [ -z "${WM_PROJECT_DIR:-}" ] || ! command -v wmake >/dev/null 2>&1; then
+    echo "Source the OpenFOAM.com etc/bashrc before running Allwmake." >&2
+    exit 1
+fi
+
+wmake "$@" libso src/mhdBoundaryConditions
+
+for solver in epotFoam_isoTh epotFoamBuo cEpotFoam cEpotBuoyantFoam cEpotBuoyantBulkFoam; do
+    wmake "$@" "applications/solvers/$solver"
+done

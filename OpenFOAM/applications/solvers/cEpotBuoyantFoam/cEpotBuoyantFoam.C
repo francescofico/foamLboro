@@ -70,6 +70,8 @@ Contact
 #include "fvOptions.H"
 //#include "pimpleControl.H" //pimple control re-created
 #include "loopControl.H" // for last energy coupling only
+#include "regionCoupledScalarSystem.H"
+#include "regionResidualControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -83,6 +85,7 @@ int main(int argc, char *argv[])
     #include "createTime.H"    
     #include "createMeshes.H"
     #include "createFields.H"
+    #include "createCoupledFields.H"
    
     #include "initContinuityErrs.H"  
     #include "createTimeControls.H" 
@@ -120,10 +123,13 @@ int main(int argc, char *argv[])
             }
         }
 
+        regionResidualControl residualControl(fluidRegions, solidRegions);
+
         // --- PIMPLE loop
         for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
         {
-            const bool finalIter = (oCorr == nOuterCorr-1);
+            const bool finalIter =
+                (oCorr == nOuterCorr-1 || residualControl.converged());
             Info<< nl << "Pimple Outer Correction = " << oCorr << endl;
 
             forAll(fluidRegions, i)
@@ -143,6 +149,9 @@ int main(int argc, char *argv[])
                 #include "readSolidMultiRegionPIMPLEControls.H"
                 #include "solveSolid.H"
             }
+
+            #include "solveCoupledScalars.H"
+            #include "correctCoupledFluidPressure.H"
 
             // Additional loops for energy solution only
             if (!oCorr && nOuterCorr > 1)
@@ -171,8 +180,12 @@ int main(int argc, char *argv[])
                         #include "readSolidMultiRegionPIMPLEControls.H"
                         #include "solveSolid.H"
                     }
+
+                    #include "solveCoupledScalars.H"
                 }
             }
+
+            if (residualControl.check(oCorr, nOuterCorr)) break;
         }
 
             runTime.write();

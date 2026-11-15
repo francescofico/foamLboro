@@ -1,12 +1,13 @@
-{   
-    
-    for (int nonOrth=0; nonOrth<=nNonOrthCorr; nonOrth++)
+#include "setFinalRegionIteration.H"
+
+{
+    for (int nonOrth=0; nonOrth<=nNonOrthCorr; ++nonOrth)
     {
-        
-
-
-        #include "PotEEqn.H"
-
+        if (!coupledPotential.enabled() || nonOrth == 0)
+        {
+            #include "PotEEqn.H"
+        }
     }
-
 }
+
+#include "clearFinalRegionIteration.H"

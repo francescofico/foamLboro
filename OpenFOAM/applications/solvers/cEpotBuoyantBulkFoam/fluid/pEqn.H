@@ -35,7 +35,7 @@
                     ( 
             
                         (
-                                oCorr == nOuterCorr-1
+                                finalIter
                             && corr == nCorr-1
                             && nonOrth == nNonOrthCorr
                         )

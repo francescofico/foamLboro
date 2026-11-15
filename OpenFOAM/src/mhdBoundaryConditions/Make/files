@@ -1,0 +1,5 @@
+solidWallMixedPotentialCoupled/solidWallMixedPotentialCoupledFvPatchScalarField.C
+solidWallMixedTemperatureCoupled/solidWallMixedTemperatureCoupledFvPatchScalarField.C
+solidWallHeatFluxTemperature/solidWallHeatFluxTemperatureFvPatchScalarField.C
+
+LIB = $(FOAM_USER_LIBBIN)/libmhdBoundaryConditions

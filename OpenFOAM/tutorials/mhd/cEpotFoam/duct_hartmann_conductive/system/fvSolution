@@ -19,22 +19,7 @@
      nOuterCorrectors 3; //Top level outer corrector - this has to be at least 2, otherwise p stored error will appear
  
  
- residualControl // do not work with conjugated solver
-     {
-         p
-         {
-             relTol  0;
-             // if this tolerance is reached, leave
-             tolerance 1e-04;
-         }
-         U
-         {
-             relTol  0;
-             // if this tolerance is reached, leave
-             tolerance 1e-04;
- 
-         }
-     }
+ // Residual controls are set in each region's fvSolution.
  
  }
  

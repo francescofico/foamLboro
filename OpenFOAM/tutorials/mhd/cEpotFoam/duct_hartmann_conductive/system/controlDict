@@ -17,6 +17,8 @@ FoamFile
 
 application     cEpotFoam; 
 
+libs            ("libmhdBoundaryConditions.so");
+
 startFrom       latestTime;
 
 startTime       0;

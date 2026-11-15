@@ -75,13 +75,13 @@ PIMPLE
     
      residualControl
     {
-        p
+        PotE
         {
             relTol  0;
             // if this tolerance is reached, leave
             tolerance 1e-04;
         }
-        U
+        T
         {
             relTol  0;
             // if this tolerance is reached, leave

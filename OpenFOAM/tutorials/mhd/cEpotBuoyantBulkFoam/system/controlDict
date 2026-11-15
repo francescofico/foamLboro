@@ -15,7 +15,9 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-application     cEpotFoam; 
+application     cEpotBuoyantBulkFoam;
+
+libs            ("libmhdBoundaryConditions.so");
 
 startFrom       latestTime;
 
