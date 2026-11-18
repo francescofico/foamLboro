@@ -1,0 +1,44 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/solid";
+    object      PotE;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Electric potential in the conducting Hartmann walls.
+//   solid_to_fluid_*:     coupled to the fluid
+//   outerWalls, wallEnds: insulating, dPotE/dn = 0
+dimensions      [1 2 -3 0 0 -1 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "solid_to_fluid_.*"
+    {
+        type            solidWallMixedPotentialCoupled;
+        value           uniform 0;
+        PotEnbr         PotE;
+        sigma           sigma;
+    }
+    "(outerWalls|wallEnds)"
+    {
+        type            zeroGradient;
+    }
+    "xPeriodic.*"
+    {
+        type            cyclic;
+    }
+}
+
+// ************************************************************************* //

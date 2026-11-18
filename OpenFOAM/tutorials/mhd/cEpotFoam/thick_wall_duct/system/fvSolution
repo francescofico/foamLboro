@@ -1,0 +1,35 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Region coupling controls.
+//
+// coupled true (default): fluid and solid potentials are solved as one
+// assembled matrix. This needs matching interface faces in the same order;
+// setup.py produces them, and the solver checks this at start-up.
+//
+// coupled false: segregated solves through the mapped interface. These are
+// also correct, but the interface converges very slowly here. After 2000
+// steps at Ha = 100 the pressure gradient was still 38 % high and drifting.
+// Use false only with a far longer endTime.
+coupled         true;
+
+PIMPLE
+{
+    nOuterCorrectors    1;
+}
+
+// ************************************************************************* //

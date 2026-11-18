@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     epotFoam_isoTh;
+
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+
+// deltaT and endTime come from system/caseParameters (setup.py). The Lorentz
+// force is explicit, so deltaT must stay below rho/(sigma B^2) = 1/Ha^2.
+// endTime covers several side-layer diffusion times (a^2/(nu Ha)).
+#include "caseParameters"
+
+endTime         $endTime;
+deltaT          $deltaT;
+
+writeControl    runTime;
+writeInterval   $endTime;
+purgeWrite      0;
+
+writeFormat     ascii;
+writePrecision  12;
+writeCompression off;
+timeFormat      general;
+timePrecision   8;
+
+runTimeModifiable true;
+adjustTimeStep  no;
+
+// ************************************************************************* //

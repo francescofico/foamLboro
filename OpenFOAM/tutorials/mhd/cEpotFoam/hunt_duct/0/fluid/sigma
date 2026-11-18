@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/fluid";
+    object      sigma;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Electrical conductivity of the fluid (non-dimensional: 1).
+dimensions      [-1 -3 3 0 0 2 0];
+
+internalField   uniform 1;
+
+boundaryField
+{
+    "(fluid_to_solid_.*|sideWalls)"
+    {
+        type            fixedValue;
+        value           uniform 1;
+    }
+    "xPeriodic.*"
+    {
+        type            cyclic;
+    }
+}
+
+// ************************************************************************* //
