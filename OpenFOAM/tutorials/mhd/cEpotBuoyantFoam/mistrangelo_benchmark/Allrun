@@ -1,0 +1,38 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+# Mistrangelo et al. (2025) magneto-convection benchmark. A production run is an
+# HPC job (about 1.5 M cells, 30 000-60 000 steps): see readme.md.
+#
+# Usage:  ./Allrun                          (parameters from system/caseParameters)
+#         CASE=2 NPROC=32 ./Allrun          (benchmark case 2 on 32 processors)
+
+python3 setup.py ${CASE:+--case "$CASE"} ${NPROC:+--nproc "$NPROC"} || exit 1
+nproc=$(foamDictionary -entry nProc -value system/caseParameters | cut -d. -f1)
+
+restore0Dir
+runApplication -s fluid blockMesh -region fluid
+runApplication -s solid blockMesh -region solid
+runApplication -s fluid checkMesh -region fluid
+runApplication -s solid checkMesh -region solid
+
+# Fringing field B_y(x), paper eq. (1)
+runApplication -s B0 postProcess -region fluid -func writeCellCentres -time 0
+python3 setB0.py || exit 1
+rm -f 0/fluid/C 0/fluid/Cx 0/fluid/Cy 0/fluid/Cz
+
+if [ "$nproc" -gt 1 ]
+then
+    runApplication decomposePar -allRegions
+    runParallel $(getApplication)
+    runApplication reconstructPar -allRegions -latestTime
+else
+    runApplication $(getApplication)
+fi
+
+runApplication -s post postProcess -region fluid \
+    -funcs "(writeCellCentres writeCellVolumes)" -latestTime
+python3 post.py
+
+#------------------------------------------------------------------------------

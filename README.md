@@ -34,14 +34,6 @@ Located in the `/post` directory, these tools are for handling of large openfoam
 *   **Boundary Conditions**: Custom `patch` implementations for electrically conductive walls.
 *   **Statistics**: Classes for calculating statistics on the fly.
 
-## 🐍 Post-Processing Tools
-
-Located in the `/post` directory, these tools are for handling of large openfoam datasets.
-
-*   **Field Manipulations**: Python scripts for calculating derived quantities
-*   **mmap Field Reader**: A high-efficiency reader using memory mapping to handle OpenFOAM fields without loading entire datasets into RAM—ideal for large LES datasets.
-*   **Automated Reconstruction**: Bash wrappers for `reconstructPar` and field mapping across different mesh topologies.
-
 ## 📖 External Resources
 *   **OpenFOAM.com**: [Source Code](https://dl.openfoam.com/source/) | [Installation](http://www.openfoam.com/download/)
 *   **Documentation**: [User Guide](http://www.openfoam.com/documentation)

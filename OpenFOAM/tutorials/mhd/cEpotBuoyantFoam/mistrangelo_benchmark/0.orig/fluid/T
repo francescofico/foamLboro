@@ -1,0 +1,47 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/fluid";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Inlet temperature 300 C (table 4).
+#include "$FOAM_CASE/system/caseParameters"
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform $T0;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform $T0;
+    }
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform $T0;
+        value           uniform $T0;
+    }
+    fluid_to_solid
+    {
+        type            solidWallMixedTemperatureCoupled;
+        value           uniform $T0;
+        Tnbr            T;
+        K               K;
+    }
+}
+
+// ************************************************************************* //

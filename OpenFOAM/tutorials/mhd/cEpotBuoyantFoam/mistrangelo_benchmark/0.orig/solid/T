@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/solid";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Heat flux q'' on the outer bottom surface for -0.3 <= x <= 0.3 m, elsewhere adiabatic.
+#include "$FOAM_CASE/system/caseParameters"
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform $T0;
+
+boundaryField
+{
+    solid_to_fluid
+    {
+        type            solidWallMixedTemperatureCoupled;
+        value           uniform $T0;
+        Tnbr            T;
+        K               K;
+    }
+    heatedWall
+    {
+        type            fixedGradient;
+        gradient        uniform $qGradient;   // q''/k_w (heat into the wall)
+    }
+    "(outerWall|wallInlet|wallOutlet)"
+    {
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //

@@ -273,7 +273,7 @@ boundaryField
 """ + END)
 
 
-def _fvoptions(loc, Gr):
+def _fvoptions(loc, Gr, mean_velocity=False):
     return (_foamfile("dictionary", loc, "fvOptions") + f"""// Boussinesq buoyancy as an explicit body force, F_x = Gr (T - TRef), TRef = 0.
 // x is vertical and periodic, so the solver's own p_rgh buoyancy cannot drive
 // a streamwise flow; constant/g is set to zero. Gr is written by setup.py.
@@ -305,10 +305,20 @@ boussinesqBuoyancy
         }}
     #}};
 }}
-""" + END)
+""" + ("""
+// Mixed convection: the bulk velocity is held at ubar = 1 by a uniform
+// pressure gradient, logged as "pressure gradient = ...".
+momentumSource
+{
+    type            meanVelocityForce;
+    selectionMode   all;
+    fields          (U);
+    Ubar            (1 0 0);
+}
+""" if mean_velocity else "") + END)
 
 
-def write(case, a, title):
+def write(case, a, title, mean_velocity=False, extra_entries=()):
     Ha = a.ha
     dt = 0.25/Ha**2
     # Insulating walls: the flow settles with an e-folding time of ~1/Ha and
@@ -355,7 +365,7 @@ def write(case, a, title):
             note = "grad T normal to B: side walls (and slab ends) hot at z = -1, cold at z = +1."
         (case/"0"/"fluid"/"T").write_text(_T_field("0/fluid", fluid, note))
         (case/"0"/"solid"/"T").write_text(_T_field("0/solid", solid, note))
-        (case/"constant"/"fluid"/"fvOptions").write_text(_fvoptions("constant/fluid", a.gr))
+        (case/"constant"/"fluid"/"fvOptions").write_text(_fvoptions("constant/fluid", a.gr, mean_velocity))
     else:
         (sysdir/"blockMeshDict").write_text(
             _fluid_blockmesh(a, ny, gy, nz, gz))
@@ -369,7 +379,7 @@ def write(case, a, title):
                      ("sideMinus", ("fixed", 0.5)), ("sidePlus", ("fixed", -0.5))]
             note = "grad T normal to B: side wall z = -1 hot, z = +1 cold; Hartmann walls adiabatic."
         (case/"0"/"T").write_text(_T_field("0", fluid, note))
-        (case/"constant"/"fvOptions").write_text(_fvoptions("constant", a.gr))
+        (case/"constant"/"fvOptions").write_text(_fvoptions("constant", a.gr, mean_velocity))
     F, slope = forcing_amplitude(par)
     entries += [
         ("forcing", F, "body force F*y (parallel) or F*z (normal) in the fluid"),
@@ -379,7 +389,7 @@ def write(case, a, title):
         ("cellsHalf", float(a.cells), ""),
         ("layerCells", float(a.layer_cells), ""),
         ("sideCells", float(a.side_cells), ""),
-    ]
+    ] + list(extra_entries)
     write_parameters(sysdir/"caseParameters", "setup.py", entries,
                      [f"{title} parameters. Regenerate with: python3 setup.py --ha <Ha> --heating <parallel|normal>"])
     print(f"Ha = {Ha:g}, Gr = {a.gr:g}, heating {a.heating} to B, fluid T slope {slope:g}, "

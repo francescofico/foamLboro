@@ -1,0 +1,29 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Assembled potential and temperature solves across fluid and solid (see
+// cEpotFoam/hunt_duct). This needs the interface faces of both regions in the
+// same order and on the same processor: setup.py builds matching meshes and
+// decomposes both regions along x only.
+coupled         true;
+
+PIMPLE
+{
+    nOuterCorrectors    1;
+}
+
+// ************************************************************************* //

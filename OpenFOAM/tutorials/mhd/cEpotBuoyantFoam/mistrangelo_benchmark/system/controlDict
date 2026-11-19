@@ -1,0 +1,93 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     cEpotBuoyantFoam;
+
+libs            ("libmhdBoundaryConditions.so");
+
+#include "caseParameters"
+
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         $endTime;
+
+// Fixed time step. The Lorentz force is explicit, so deltaT must stay below
+// rho/(sigma B0^2) (about 0.045 s here); participants used 0.004-0.015 s.
+deltaT          $deltaT;
+adjustTimeStep  no;
+
+writeControl    runTime;
+writeInterval   $writeInterval;
+purgeWrite      3;
+
+writeFormat     ascii;      // post.py reads ASCII fields
+writePrecision  10;
+writeCompression off;
+timeFormat      general;
+timePrecision   8;
+
+runTimeModifiable true;
+
+functions
+{
+    // Time averages for the comparison (paper table 5 lists the intervals used)
+    fieldAverage
+    {
+        type            fieldAverage;
+        libs            (fieldFunctionObjects);
+        region          fluid;
+        writeControl    writeTime;
+        timeStart       $averageStart;
+        fields
+        (
+            U       { mean on; prime2Mean off; base time; }
+            T       { mean on; prime2Mean off; base time; }
+            p_rgh   { mean on; prime2Mean off; base time; }
+            PotE    { mean on; prime2Mean off; base time; }
+        );
+    }
+
+    // Lines used in the paper's figures (y = 0 plane unless stated)
+    benchmarkLines
+    {
+        type            sets;
+        libs            (sampling);
+        region          fluid;
+        writeControl    writeTime;
+        setFormat       csv;
+        interpolationScheme cellPoint;
+        fields          (U T p_rgh PotE UMean TMean p_rghMean PotEMean);
+
+        sets
+        {
+            centreline      { type uniform; axis x; start ($xIn 0 0); end ($xOut 0 0); nPoints 1001; }   // figs 6-8, 23, 24, 30
+            sideWallMinus   { type uniform; axis x; start ($xIn 0 -0.02299); end ($xOut 0 -0.02299); nPoints 1001; }  // figs 15, 31
+            sideWallPlus    { type uniform; axis x; start ($xIn 0 0.02299); end ($xOut 0 0.02299); nPoints 1001; }    // fig 32
+            jetMinus        { type uniform; axis x; start ($xIn 0 -0.0215); end ($xOut 0 -0.0215); nPoints 1001; }    // fig 25
+            jetPlus         { type uniform; axis x; start ($xIn 0 0.0215); end ($xOut 0 0.0215); nPoints 1001; }      // fig 25
+            z_xm030         { type uniform; axis z; start (-0.3 0 -0.02299); end (-0.3 0 0.02299); nPoints 401; }     // figs 9, 12, 26, 28
+            z_x000          { type uniform; axis z; start (0 0 -0.02299); end (0 0 0.02299); nPoints 401; }           // figs 10, 13, 16, 27, 29, 33
+            z_x015          { type uniform; axis z; start (0.15 0 -0.02299); end (0.15 0 0.02299); nPoints 401; }     // fig 11
+            z_x030          { type uniform; axis z; start (0.3 0 -0.02299); end (0.3 0 0.02299); nPoints 401; }       // fig 11
+            z_x060          { type uniform; axis z; start (0.6 0 -0.02299); end (0.6 0 0.02299); nPoints 401; }       // fig 11
+            z_x100          { type uniform; axis z; start (1.0 0 -0.02299); end (1.0 0 0.02299); nPoints 401; }       // fig 11
+        }
+    }
+}
+
+// ************************************************************************* //

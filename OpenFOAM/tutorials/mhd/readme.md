@@ -43,12 +43,21 @@ Buoyant cases have zero net flow, so their headline number is the peak velocity,
 
 The buoyant ducts are periodic in the vertical direction. That is incompatible with a periodic `p_rgh`, so their buoyancy is a coded body force. `buoyant_slot` covers the solvers' own buoyancy term.
 
+### Testing phase
+These cases are new. They have not been tested beyond the runs noted in their readmes. Treat them as work in progress.
+
+| Case | Solver | Reference | Status |
+|---|---|---|---|
+| [`mixed_convection_insulating`](epotFoamBuo/mixed_convection_insulating) | `epotFoamBuo` | Zheng, Chen & Ni (2025), case I; exact superposition | one run: 0.52 % in G, 0.30 % max velocity error (Ha_paper 100, Gr/Re 5) |
+| [`mixed_convection_conducting`](cEpotBuoyantFoam/mixed_convection_conducting) | `cEpotBuoyantFoam` | Zheng, Chen & Ni (2025), case II; exact superposition | one run: 0.20 % in G, 0.36 % max velocity error |
+| [`mistrangelo_benchmark`](cEpotBuoyantFoam/mistrangelo_benchmark) | `cEpotBuoyantFoam` | Mistrangelo et al. (2025) 3D code-to-code benchmark | set up only (HPC case); some material properties assumed |
+
 **Scope and limitations.** These cases check that the solvers reproduce known solutions, for the listed meshes and parameters in OpenFOAM v2606. They are not a comparison with experiments. Some reference solutions (thick-wall duct, conducting pipe, buoyant ducts) were derived here and checked against limiting cases and independent numerical solutions, but not against published data. Errors in the references or scripts are still possible; please report any you find.
 
 [`common/`](common) holds the shared Python code:
 - `mhdAnalytic.py`: Hartmann and duct series solutions (pressure-driven and buoyant) for insulating, thin, thick and perfectly conducting walls
 - `pipeAnalytic.py`: spectral pipe solution (insulating, thin or thick conducting wall) and the closed-form Gold-type check
-- `ductValidation.py`, `conductingDuct.py`, `pipeCase.py` and `buoyantDuct.py`: comparison, plotting and case setup
+- `ductValidation.py`, `conductingDuct.py`, `pipeCase.py`, `buoyantDuct.py` and `zhengDuct.py`: comparison, plotting and case setup
 - `foamCase.py`: ASCII field reader, mesh grading, parameter files
 
 The scripts find `common/` through the relative path `../../common`. If you copy a case elsewhere, set `MHD_COMMON=/path/to/common`. They need Python 3 with numpy; matplotlib is optional and used for the plots.

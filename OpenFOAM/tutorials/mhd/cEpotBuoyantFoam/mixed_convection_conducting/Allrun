@@ -1,0 +1,21 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+# Usage:  ./Allrun                         (parameters from system/caseParameters)
+#         GRRE=1 HA=50 ./Allrun            (Gr/Re of the paper; Ha half-width based)
+
+python3 setup.py ${HA:+--ha "$HA"} ${GRRE:+--gr-re "$GRRE"} || exit 1
+
+runApplication -s fluid blockMesh -region fluid
+runApplication -s solid blockMesh -region solid
+runApplication $(getApplication)
+for region in fluid solid
+do
+    runApplication -s $region postProcess -region $region \
+        -funcs "(writeCellCentres writeCellVolumes)" -latestTime
+done
+
+python3 validate.py
+
+#------------------------------------------------------------------------------
