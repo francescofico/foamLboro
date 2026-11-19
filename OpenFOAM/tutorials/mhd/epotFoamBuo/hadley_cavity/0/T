@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// End walls: hot at x = 0 (T = +0.5), cold at x = L (T = -0.5); Delta T = 1.
+// Top and bottom (y = +-a) adiabatic.
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    hotWall
+    {
+        type            fixedValue;
+        value           uniform 0.5;
+    }
+    coldWall
+    {
+        type            fixedValue;
+        value           uniform -0.5;
+    }
+    horizontalWalls
+    {
+        type            zeroGradient;
+    }
+    "zPeriodic.*"
+    {
+        type            cyclic;
+    }
+}
+
+// ************************************************************************* //

@@ -39,8 +39,11 @@ Buoyant cases have zero net flow, so their headline number is the peak velocity,
 | [`buoyant_slot`](epotFoamBuo/buoyant_slot) | `epotFoamBuo` | exact buoyant Hartmann profile | Solver's own `p_rgh` buoyancy, closed tall slot, ∇T ∥ B | 0.002 % (Ha 20) | 30 s |
 | [`buoyant_duct_insulating`](epotFoamBuo/buoyant_duct_insulating) | `epotFoamBuo` | exact series; cf. Authié, Tagawa & Moreau (2003) | Vertical duct, ∇T ⊥ B or ∥ B (`HEATING=`) | 0.51 % / 0.44 % (Ha 100) | 4.5 / 2.3 min |
 | [`buoyant_duct_conducting`](cEpotBuoyantFoam/buoyant_duct_conducting) | `cEpotBuoyantFoam` | exact series, thick walls | Conjugate electric and thermal coupling, both orientations | 0.44 % / 0.58 % (Ha 100) | 2.5 min |
+| [`hadley_cavity`](epotFoamBuo/hadley_cavity) | `epotFoamBuo` | exact parallel-flow core; cf. Garandet, Alboussière & Moreau (1992) | Horizontal cavity, vertical B: **heat transport by the flow** (T advection) | 0.005 % (θ: 0.06 %) (Ha 20) | 2 min |
 
 The buoyant ducts are periodic in the vertical direction. That is incompatible with a periodic `p_rgh`, so their buoyancy is a coded body force. `buoyant_slot` covers the solvers' own buoyancy term.
+
+**Scope and limitations.** These cases check that the solvers reproduce known solutions, for the listed meshes and parameters in OpenFOAM v2606. They are not a comparison with experiments. Some reference solutions (thick-wall duct, conducting pipe, buoyant ducts) were derived here and checked against limiting cases and independent numerical solutions, but not against published data. Errors in the references or scripts are still possible; please report any you find.
 
 [`common/`](common) holds the shared Python code:
 - `mhdAnalytic.py`: Hartmann and duct series solutions (pressure-driven and buoyant) for insulating, thin, thick and perfectly conducting walls

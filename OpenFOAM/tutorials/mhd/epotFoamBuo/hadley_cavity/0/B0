@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      B0;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Applied field along y: vertical, parallel to gravity and normal to the long
+// (top and bottom) walls, so the core flow has Hartmann layers there.
+// With a = rho = nu = sigma = 1, Ha = B. Value from system/caseParameters.
+#include "$FOAM_CASE/system/caseParameters"
+
+dimensions      [1 0 -2 0 0 -1 0];
+
+internalField   uniform (0 $B 0);
+
+boundaryField
+{
+    "(hotWall|coldWall|horizontalWalls)"
+    {
+        type            zeroGradient;
+    }
+    "zPeriodic.*"
+    {
+        type            cyclic;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      PotE;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Electric potential. All walls insulating. z is periodic with a plain
+// cyclic: in a closed 2D cavity the net flow through any vertical section is
+// zero, so the net spanwise current sigma B int(u) dy is zero too, and no
+// potential jump is needed.
+dimensions      [1 2 -3 0 0 -1 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "(hotWall|coldWall|horizontalWalls)"
+    {
+        type            zeroGradient;
+    }
+    "zPeriodic.*"
+    {
+        type            cyclic;
+    }
+}
+
+// ************************************************************************* //
