@@ -46,6 +46,8 @@ G a²/(ρ ν ū) = Ha² / (Ha coth Ha − 1)      insulating
 
 ## Results (v2606, default mesh)
 
+**G** is the mean streamwise pressure gradient −dp/dx needed to drive the bulk velocity ū. It is the value the `meanVelocityForce` fvOption logs as `pressure gradient = ...`. The tables give it in the non-dimensional form G a²/(ρ ν ū), with a = the channel half-height. With no magnetic field it would be 3, so the rise above that is the MHD drag.
+
 | Ha | electrodes | G: OpenFOAM | G: exact | error in G | max error in u/ū |
 |---|---|---|---|---|---|
 | 10 | insulating | 11.064 | 11.111 | 0.42 % | 0.31 % |

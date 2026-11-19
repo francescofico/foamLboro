@@ -40,6 +40,8 @@ Hunt's Fourier-series solution for thin walls of conductance ratio c, evaluated 
 
 ## Results (v2606, default mesh)
 
+**G** is the mean streamwise pressure gradient −dp/dx needed to drive the bulk velocity ū. It is the value the `meanVelocityForce` fvOption logs as `pressure gradient = ...`. The tables give it in the non-dimensional form G a²/(ρ ν ū), with a = the duct half-width. With no magnetic field it would be 7.11, so the rise above that is the MHD drag.
+
 | Ha | c | G: OpenFOAM | G: Hunt | error in G | jet peak: OpenFOAM / Hunt | max error in u/ū | max error in wall φ | run time |
 |---|---|---|---|---|---|---|---|---|
 | 100 | 0.1 | 821.01 | 822.53 | 0.18 % | 2.466 / 2.460 | 0.39 % | 0.09 % | 107 s |

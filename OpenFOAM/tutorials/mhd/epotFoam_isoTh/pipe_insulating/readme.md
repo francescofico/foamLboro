@@ -45,6 +45,8 @@ with a Chebyshev–Fourier spectral method, converged to about 10 digits. It is 
 
 ## Results (v2606, default mesh)
 
+**G** is the mean streamwise pressure gradient −dp/dx needed to drive the bulk velocity ū. It is the value the `meanVelocityForce` fvOption logs as `pressure gradient = ...`. The tables give it in the non-dimensional form G a²/(ρ ν ū), with a = the pipe radius. With no magnetic field it would be 8, so the rise above that is the MHD drag.
+
 | Ha | G: OpenFOAM | G: reference | error in G | max error in u/ū | L2 error | run time |
 |---|---|---|---|---|---|---|
 | 20 | 28.218 | 28.291 | 0.26 % | 0.12 % | 0.07 % | 4.7 min |

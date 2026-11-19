@@ -1,0 +1,15 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+# Usage:  ./Allrun                 (parameters from system/caseParameters)
+#         HA=20 GR=4000 ./Allrun
+
+python3 setup.py ${HA:+--ha "$HA"} ${GR:+--gr "$GR"} || exit 1
+
+runApplication blockMesh
+runApplication $(getApplication)
+runApplication postProcess -func writeCellCentres -latestTime
+python3 validate.py
+
+#------------------------------------------------------------------------------

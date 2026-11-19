@@ -37,6 +37,8 @@ Shercliff's Fourier-series solution, evaluated in `../../common/mhdAnalytic.py` 
 
 ## Results (v2606, default mesh)
 
+**G** is the mean streamwise pressure gradient −dp/dx needed to drive the bulk velocity ū. It is the value the `meanVelocityForce` fvOption logs as `pressure gradient = ...`. The tables give it in the non-dimensional form G a²/(ρ ν ū), with a = the duct half-width. With no magnetic field it would be 7.11, so the rise above that is the MHD drag.
+
 | Ha | G: OpenFOAM | G: exact | error in G | max error in u/ū | max error in φ | run time |
 |---|---|---|---|---|---|---|
 | 100 | 109.794 | 110.444 | 0.59 % | 0.29 % | 0.05 % | 93 s |

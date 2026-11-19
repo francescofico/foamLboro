@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+# Usage:  ./Allrun                         (parameters from system/caseParameters)
+#         HEATING=parallel ./Allrun        (grad T along B; default normal to B)
+
+python3 setup.py ${HA:+--ha "$HA"} ${GR:+--gr "$GR"} ${HEATING:+--heating "$HEATING"} || exit 1
+
+runApplication blockMesh
+runApplication $(getApplication)
+runApplication postProcess -funcs "(writeCellCentres writeCellVolumes)" -latestTime
+
+python3 validate.py
+
+#------------------------------------------------------------------------------

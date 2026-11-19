@@ -43,6 +43,8 @@ At the default parameters the wall thickness lowers G by **18 %** relative to Hu
 
 ## Results (v2606, default mesh)
 
+**G** is the mean streamwise pressure gradient −dp/dx needed to drive the bulk velocity ū. It is the value the `meanVelocityForce` fvOption logs as `pressure gradient = ...`. The tables give it in the non-dimensional form G a²/(ρ ν ū), with a = the duct half-width. With no magnetic field it would be 7.11, so the rise above that is the MHD drag.
+
 | Ha | t_w/a | σ_w/σ | G: OpenFOAM | G: exact | G: Hunt (same c) | error in G | max error in u/ū | max error in wall φ | run time |
 |---|---|---|---|---|---|---|---|---|---|
 | 100 | 0.5 | 0.2 | 671.57 | 673.34 | 822.53 | 0.26 % | 0.31 % | 0.10 % | 112 s |
