@@ -6,6 +6,10 @@
 
 This repository contains custom solvers, libraries, and post-processing tools developed for Magnetohydrodynamics (MHD) and Heat Transfer research at Loughborough University.
 
+> **OpenFOAM version:** the code builds and runs with **OpenFOAM.com v2606**. The original v1912 implementation is kept on the `v1912-stable` branch.
+>
+> **Tutorials:** many tutorial cases are available, including validation cases checked against analytical and literature solutions. See [OpenFOAM/tutorials/mhd/readme.md](OpenFOAM/tutorials/mhd/readme.md) for the list and details.
+
 ## 🛠 OpenFOAM Code Development
 
 ### Solvers
@@ -40,10 +44,10 @@ Located in the `/post` directory, these tools are for handling of large openfoam
 *   **Community**: [Code Wiki](https://develop.openfoam.com/Development/openfoam/-/wikis/) | [CFD Online](https://www.cfd-online.com/Forums/openfoam/)
 
 ## 📂 Repository Structure - [ in progress]
-*   **`branch`**: Each branch corresponds to a specific OpenFOAM version (e.g., `v1912`,).
+*   **`branch`**: Each branch corresponds to a specific OpenFOAM version (`main`: v2606, `v1912-stable`: v1912).
 *   **`solvers/`**: Source code for the custom applications.
 *   **`src/`**: Shared libraries and classes.
-*   **`tutorials/`**: Test cases
+*   **`tutorials/`**: Example and validation cases (see the [tutorials readme](OpenFOAM/tutorials/mhd/readme.md))
 ## 📑 Citation
 If you use this code for your research, please cite the following publications:
 
@@ -54,5 +58,5 @@ If you use this code for your research, please cite the following publications:
 ## 🚧 Status & Roadmap
 - [ ] Complete tutorial documentation
 - [ ] Add automated validation scripts
-- [ ] Update the code to latest OpenFOAM version
+- [x] Update the code to latest OpenFOAM version (v2606)
 - [ ] Extend mmap reader to support polyhedral meshes.
