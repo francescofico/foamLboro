@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2606                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      B0;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Applied magnetic field along y (transverse to the pipe axis x).
+// With a = rho = nu = sigma = 1, Ha = B a sqrt(sigma/(rho nu)) = B.
+// Value from system/caseParameters (setup.py).
+#include "$FOAM_CASE/system/caseParameters"
+
+dimensions      [1 0 -2 0 0 -1 0];
+
+internalField   uniform (0 $B 0);
+
+boundaryField
+{
+    wall
+    {
+        type            zeroGradient;
+    }
+    "xPeriodic.*"
+    {
+        type            cyclic;
+    }
+}
+
+// ************************************************************************* //

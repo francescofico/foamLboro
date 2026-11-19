@@ -25,10 +25,15 @@ Laminar, fully developed cases with analytical solutions from the literature. Ea
 | [`shercliff_duct`](epotFoam_isoTh/shercliff_duct) | `epotFoam_isoTh` | Shercliff (1953) | Square duct, insulating walls, side layers | 0.59 % (Ha 100) | 1.5 min |
 | [`hunt_duct`](cEpotFoam/hunt_duct) | `cEpotFoam` | Hunt (1965) | Thin conducting Hartmann walls, side jets | 0.18 % (Ha 100, c 0.1) | 2 min |
 | [`thick_wall_duct`](cEpotFoam/thick_wall_duct) | `cEpotFoam` | exact thick-wall solution; cf. Bluck & Wolfendale (2015) | Thick conducting walls, potential inside the wall | 0.26 % (Ha 100) | 2 min |
+| [`pipe_insulating`](epotFoam_isoTh/pipe_insulating) | `epotFoam_isoTh` | Gold (1962), Shercliff (1956) | Circular pipe, O-grid (non-orthogonal) | 0.42 % (Ha 100) | 2 min |
+| [`pipe_conducting`](cEpotFoam/pipe_conducting) | `cEpotFoam` | exact thick-wall solution; cf. Chang & Lundgren (1961) | Conducting annular wall, curved interface | 0.07 % (Ha 100) | 2 min |
+
+The pipe cases need `gradSchemes leastSquares` and a time-step cap on the O-grid. Their readmes explain why.
 
 [`common/`](common) holds the shared Python code:
 - `mhdAnalytic.py`: Hartmann and duct series solutions for insulating, thin, thick and perfectly conducting walls
-- `ductValidation.py` and `conductingDuct.py`: comparison and plotting, and the two-region duct setup
+- `pipeAnalytic.py`: spectral pipe solution (insulating, thin or thick conducting wall) and the closed-form Gold-type check
+- `ductValidation.py`, `conductingDuct.py` and `pipeCase.py`: comparison, plotting and case setup
 - `foamCase.py`: ASCII field reader, mesh grading, parameter files
 
 The scripts find `common/` through the relative path `../../common`. If you copy a case elsewhere, set `MHD_COMMON=/path/to/common`. They need Python 3 with numpy; matplotlib is optional and used for the plots.
